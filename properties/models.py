@@ -1,10 +1,11 @@
 from django.db import models
 
 from tenants.managers import TenantManager
+from tenants.models import Company
 
 
 class Property(models.Model):
-    company_id = models.IntegerField()
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     address = models.TextField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
@@ -16,6 +17,6 @@ class Property(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["company_id", "price"]),
-            models.Index(fields=["company_id", "listed_at"]),
+            models.Index(fields=["company", "price"]),
+            models.Index(fields=["company", "listed_at"]),
         ]

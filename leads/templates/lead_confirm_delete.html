@@ -1,0 +1,25 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}Delete Lead - Real Estate CRM{% endblock title %}
+
+{% block content %}
+<div class="p-6">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Delete Lead</h1>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="text-gray-700 dark:text-gray-300">Are you sure you want to delete <strong>{{ lead.name }}</strong>?
+        </p>
+
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <div class="flex justify-between">
+                <a href="{% url 'leads:lead_list' %}" class="text-gray-600 hover:underline">Cancel</a>
+                <button type="submit"
+                    class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

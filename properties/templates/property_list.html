@@ -1,0 +1,50 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Properties - Admin Dashboard{% endblock title %}
+
+{% block dashboard_content %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Properties</h1>
+    <a href="{% url 'properties:property_create' name=request.user.company.name %}" 
+       class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+        + Add New Property
+    </a>
+</div>
+
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">All Properties</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b bg-gray-200 dark:bg-gray-700">
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Name</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Location</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Price</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Status</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for property in properties %}
+                <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <td class="p-3 text-gray-900 dark:text-white">{{ property.name }}</td>
+                    <td class="p-3 text-gray-900 dark:text-white">{{ property.location }}</td>
+                    <td class="p-3 text-gray-900 dark:text-white">${{ property.price }}</td>
+                    <td class="p-3 text-green-600 font-bold">{{ property.status }}</td>
+                    <td class="p-3 text-right">
+                        <a href="{% url 'properties:property_detail' name=request.user.company.name pk=property.pk %}" 
+                           class="text-blue-600 hover:underline">View</a>
+                        <a href="{% url 'properties:property_delete' name=request.user.company.name pk=property.pk %}" 
+                           class="text-red-600 hover:underline ml-2">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="p-3 text-center text-gray-500 dark:text-gray-400">No properties found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock dashboard_content %}

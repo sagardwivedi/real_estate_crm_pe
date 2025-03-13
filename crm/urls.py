@@ -3,16 +3,11 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    # Django Admin
     path("admin/", admin.site.urls),
-
-    # Public Landing Page
     path("", include("landing.urls")),
-
-    # User Authentication & Profile Management
     path("user/", include("users.urls")),
-
-    # Dynamic URLs Based on Company Name
-    path("<str:name>/", include("company_admin.urls")),  # CRM Dashboard for Each Company
-
+    path("<str:name>/", include("company_admin.urls")),
+    path("<str:name>/leads/", include("leads.urls")),
+    path("<str:name>/properties/", include("properties.urls")),
+    path("<str:name>/settings/", include("settings.urls")),
 ] + debug_toolbar_urls()

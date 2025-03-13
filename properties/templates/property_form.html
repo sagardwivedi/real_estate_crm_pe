@@ -1,0 +1,45 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}{{ form.instance.pk|yesno:"Edit Property,New Property" }}{% endblock title %}
+
+{% block dashboard_content %}
+<h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+    {{ form.instance.pk|yesno:"Edit Property,Create New Property" }}
+</h1>
+
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300">Name</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300">Location</label>
+                {{ form.location }}
+            </div>
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300">Price</label>
+                {{ form.price }}
+            </div>
+            <div>
+                <label class="block text-gray-700 dark:text-gray-300">Status</label>
+                {{ form.status }}
+            </div>
+            <div class="col-span-2">
+                <label class="block text-gray-700 dark:text-gray-300">Description</label>
+                {{ form.description }}
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                Save Property
+            </button>
+            <a href="{% url 'properties:property_list' name=request.user.company.name %}" 
+               class="ml-4 text-gray-600 hover:underline">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock dashboard_content %}

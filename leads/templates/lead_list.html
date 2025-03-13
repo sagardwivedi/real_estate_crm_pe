@@ -1,0 +1,47 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Leads - Real Estate CRM{% endblock title %}
+
+{% block dashboard_content %}
+<div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Leads</h1>
+        <a href="{% url 'leads:lead_create' name=request.user.company.name %}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            + Add New Lead
+        </a>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Lead List</h3>
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="border-b bg-gray-200 dark:bg-gray-700">
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Name</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Email</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Status</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300">Assigned Agent</th>
+                    <th class="p-3 text-gray-700 dark:text-gray-300 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lead in leads %}
+                <tr class="border-b hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <td class="p-3 text-gray-900 dark:text-white">{{ lead.name }}</td>
+                    <td class="p-3 text-gray-900 dark:text-white">{{ lead.email }}</td>
+                    <td class="p-3 text-gray-900 dark:text-white">{{ lead.status }}</td>
+                    <td class="p-3 text-gray-900 dark:text-white">{{ lead.assigned_agent }}</td>
+                    <td class="p-3 text-right">
+                        <a href="{% url 'leads:lead_detail' lead.pk %}" class="text-blue-600 hover:underline">View</a> |
+                        <a href="{% url 'leads:lead_delete' lead.pk %}" class="text-red-600 hover:underline">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="p-3 text-center text-gray-600 dark:text-gray-300">No leads available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     "transactions",
     "tenants",
     "company_admin",
+    "leads",
+    "settings",
+    "reports"
 ]
 
 MIDDLEWARE = [

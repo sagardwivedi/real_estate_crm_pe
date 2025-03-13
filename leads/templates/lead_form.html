@@ -1,0 +1,46 @@
+{% extends 'dashboard_base.html' %}
+
+{% block title %}Add New Lead - Real Estate CRM{% endblock title %}
+
+{% block dashboard_content %}
+<div class="p-6 space-y-6">
+    <!-- Page Header -->
+    <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New Lead</h1>
+        <a href="{% url 'leads:lead_list' name=request.user.company.name %}" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition">
+            ← Back to Leads
+        </a>
+    </div>
+
+    <!-- Form Container -->
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for field in form %}
+                <div>
+                    <label class="text-gray-700 dark:text-gray-300 block font-semibold mb-1">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="text-red-600 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 flex justify-end gap-4">
+                <a href="{% url 'leads:lead_list' name=request.user.company.name %}" 
+                   class="text-gray-600 dark:text-gray-400 border px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                   Cancel
+                </a>
+                <button type="submit" 
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition shadow-md">
+                    Save Lead
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock dashboard_content %}

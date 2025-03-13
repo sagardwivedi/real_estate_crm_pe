@@ -7,11 +7,11 @@ _thread_locals = local()
 
 
 def get_current_company():
-    return getattr(_thread_locals, "company_id", None)
+    return getattr(_thread_locals, "company", None)
 
 
-def set_current_company(company_id):
-    _thread_locals.company_id = company_id
+def set_current_company(company):
+    _thread_locals.company = company
 
 
 class TenantMiddleware(MiddlewareMixin):
@@ -20,5 +20,5 @@ class TenantMiddleware(MiddlewareMixin):
             set_current_company(request.user.company.id)
 
     def process_response(self, request: HttpRequest, response: HttpResponse):
-        _thread_locals.company_id = None
+        _thread_locals.company = None
         return response

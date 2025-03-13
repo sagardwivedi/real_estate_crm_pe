@@ -1,0 +1,29 @@
+<aside class="w-64 bg-white dark:bg-gray-800 p-6 shadow-lg flex flex-col justify-between">
+    <div>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Admin Panel</h2>
+        <nav>
+            <ul class="space-y-4">
+                <li><a href="{% url 'dashboard' name=request.user.company.name %}"
+                        class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                        🏠 <span class="ml-2">Dashboard</span></a></li>
+                <li><a href="{% url 'leads:lead_list' name=request.user.company.name %}"
+                        class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                        📋 <span class="ml-2">Leads</span></a></li>
+                <li><a href="{% url 'properties:property_list' name=request.user.company.name %}"
+                        class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                        🏢 <span class="ml-2">Properties</span></a></li>
+                <li><a href="#" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                        📊 <span class="ml-2">Reports</span></a></li>
+                <li><a href="{% url 'company_settings:company_info' name=request.user.company.name %}" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                        ⚙️ <span class="ml-2">Settings</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    <!-- Logout Button -->
+    <form method="POST" action="{% url 'logout' %}" class="flex items-center">
+        {% csrf_token %}
+        <button type="submit" class="text-red-600 hover:text-red-700 flex items-center">
+            🚪 <span class="ml-2">Logout</span>
+        </button>
+    </form>
+</aside>

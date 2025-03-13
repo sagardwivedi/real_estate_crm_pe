@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}User Management - Real Estate CRM{% endblock %}
+
+{% block content %}
+<div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <!-- Navbar Sidebar -->
+    {% include "_sidebar.html" %}
+    
+    <!-- Settings Sidebar -->
+    {% include "_settings_sidebar.html" %}
+    
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">User Management</h1>
+        
+        <ul class="mt-6 space-y-4">
+            {% for user in users %}
+            <li class="flex justify-between items-center py-2 border-b">
+                <span>{{ user.username }}</span>
+                <div>
+                    <a href="#" class="text-blue-600 hover:text-blue-800">Edit</a> | 
+                    <a href="#" class="text-red-600 hover:text-red-800">Deactivate</a>
+                </div>
+            </li>
+            {% empty %}
+            <li>No users found.</li>
+            {% endfor %}
+        </ul>
+    </main>
+</div>
+{% endblock %}
