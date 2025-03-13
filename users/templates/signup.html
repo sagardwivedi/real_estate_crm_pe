@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Real Estate CRM{% endblock title %}
+
+{% block content %}
+<div class="container mx-auto py-16 px-6">
+    <h2 class="text-4xl font-extrabold text-center text-gray-900 dark:text-white">
+        Register Your Real Estate Company
+    </h2>
+    <p class="text-center text-gray-600 dark:text-gray-300 mt-2">
+        Get started in just a few minutes. Manage properties, clients, and sales seamlessly.
+    </p>
+
+    <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg mt-8">
+        <form method="post" class="space-y-8">
+            {% csrf_token %}
+
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white flex items-center">
+                🏢 Company Information
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Company Name</label>
+                    {{ company_form.name }}
+                </div>
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Contact Email</label>
+                    {{ company_form.contact_email }}
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Phone Number</label>
+                    {{ company_form.phone }}
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-gray-900 dark:text-white flex items-center mt-8">
+                👤 Admin User
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Full Name</label>
+                    {{ admin_form.full_name }}
+                </div>
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Email</label>
+                    {{ admin_form.email }}
+                </div>
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Password</label>
+                    {{ admin_form.password1 }}
+                </div>
+                <div>
+                    <label class="block text-gray-700 dark:text-gray-300 font-medium">Confirm Password</label>
+                    {{ admin_form.password2 }}
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full py-3 text-white font-semibold text-lg rounded-lg transition duration-300
+                bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600
+                dark:from-blue-500 dark:to-blue-400 dark:hover:from-blue-600 dark:hover:to-blue-500">
+                🚀 Register Company
+            </button>
+
+            <p class="text-center text-gray-600 dark:text-gray-300 text-sm">
+                Already have an account? 
+                <a href="{% url 'login' %}" class="text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+                    Log in here
+                </a>
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock content %}
