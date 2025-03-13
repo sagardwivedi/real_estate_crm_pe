@@ -18,7 +18,12 @@
         {% if messages %}
         <div class="mb-6">
             {% for message in messages %}
-            <div class="alert {{ message.tags }}">
+            <div class="p-4 rounded-lg shadow-md 
+                {% if message.tags == 'success' %}
+                    bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200
+                {% elif message.tags == 'error' %}
+                    bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-200
+                {% endif %}">
                 {{ message }}
             </div>
             {% endfor %}
@@ -26,17 +31,37 @@
         {% endif %}
 
         <!-- User Creation Form -->
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }} <!-- Form fields rendered here -->
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-2xl">
+            <form method="POST">
+                {% csrf_token %}
 
-            <div class="mt-6 flex justify-end">
-                <button type="submit"
-                    class="px-6 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Create User
-                </button>
-            </div>
-        </form>
+                <div class="grid grid-cols-1 gap-4">
+                    {% for field in form %}
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="mt-6 flex justify-between">
+                    <a href="{% url 'company_settings:user_management' name=request.user.company.name %}"
+                        class="text-gray-600 dark:text-gray-400 hover:underline">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="px-6 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Create User
+                    </button>
+                </div>
+            </form>
+        </div>
     </main>
 </div>
 {% endblock %}

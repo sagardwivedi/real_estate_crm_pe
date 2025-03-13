@@ -1,6 +1,5 @@
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
@@ -8,7 +7,14 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, UpdateView
 
 from leads.views import AdminRequiredMixin
-from users.forms import AdminSignupForm, CompanySignupForm, CustomLoginForm
+from tenants.middleware import get_current_company
+from users.forms import (
+    AdminSignupForm,
+    CompanySignupForm,
+    CustomLoginForm,
+    UserCreateForm,
+    UserEditForm,
+)
 from users.models import CustomUser
 
 
@@ -24,23 +30,26 @@ class SignupView(TemplateView):
 
         if company_form.is_valid() and admin_form.is_valid():
             return self.form_valid(company_form, admin_form)
+
+        messages.error(request, "Please correct the errors below.")
         return self.render_to_response(
             self.get_context_data(company_form=company_form, admin_form=admin_form)
         )
 
     def form_valid(self, company_form, admin_form):
-        # Save company and generate a slug
+        """Handles valid form submission by creating a company and an admin user."""
         company = company_form.save()
-        # Save the admin user and assign the company
-        admin_user = admin_form.save(company=company)
+        admin_user = admin_form.save(commit=False)
+        admin_user.company = company
+        admin_user.role = "admin"
+        admin_user.save()
 
-        # Log in the user
         login(self.request, admin_user)
-
-        # Redirect to the company-specific dashboard
-        return redirect(
-            reverse_lazy("dashboard", kwargs={"company_slug": company.slug})
+        messages.success(
+            self.request, "Company and admin account created successfully!"
         )
+
+        return redirect(reverse_lazy("dashboard", kwargs={"name": company.name}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -52,12 +61,13 @@ class SignupView(TemplateView):
 
 
 class CustomLoginView(LoginView):
+    """Custom login view with improved redirection logic."""
+
     template_name = "login.html"
     form_class = CustomLoginForm
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        # Redirect to the logged-in user's company dashboard
         user = self.request.user
         if user.is_authenticated and user.company:
             return reverse_lazy("dashboard", kwargs={"name": user.company.name})
@@ -65,31 +75,40 @@ class CustomLoginView(LoginView):
 
 
 class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+    """Admin-only view for creating users within the company."""
+
     model = CustomUser
-    form_class = UserCreationForm
+    form_class = UserCreateForm
     template_name = "user_create.html"
-    success_url = reverse_lazy("users:user_list")
 
     def form_valid(self, form):
-        # Save the form and show a success message
+        """Assigns the company to the new user and saves it."""
+        company = get_current_company()
+        if not company:
+            messages.error(self.request, "No active company found.")
+            return self.form_invalid(form)
+
+        user = form.save(commit=False)
+        user.company = company
+        user.set_password(form.cleaned_data["password"])  # Ensure password is hashed
+        user.save()
+
         messages.success(self.request, "User created successfully.")
         return super().form_valid(form)
 
-    def form_invalid(self, form):
-        # Show error message if the form is invalid
-        messages.error(self.request, "There was an error creating the user.")
-        return super().form_invalid(form)
+    def get_success_url(self):
+        return reverse_lazy(
+            "company_settings:user_management",
+            kwargs={"name": self.request.user.company.name},
+        )
 
 
 class UserEditView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
-    model = CustomUser
-    form_class = UserChangeForm  # Django's built-in UserChangeForm for editing users
-    template_name = "user_edit.html"
-    success_url = reverse_lazy("users:user_list")
+    """Allows admins to edit user details."""
 
-    def get_object(self):
-        # This is used to fetch the user based on the URL, allowing you to edit the selected user.
-        return self.get_queryset().get(id=self.kwargs["pk"])
+    model = CustomUser
+    form_class = UserEditForm
+    template_name = "user_edit.html"
 
     def form_valid(self, form):
         messages.success(self.request, "User information updated successfully.")
@@ -100,3 +119,9 @@ class UserEditView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
             self.request, "There was an error updating the user information."
         )
         return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "company_settings:user_management",
+            kwargs={"name": self.request.user.company.name},
+        )
