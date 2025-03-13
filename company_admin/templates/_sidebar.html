@@ -14,13 +14,14 @@
                         🏢 <span class="ml-2">Properties</span></a></li>
                 <li><a href="#" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
                         📊 <span class="ml-2">Reports</span></a></li>
-                <li><a href="{% url 'company_settings:company_info' name=request.user.company.name %}" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                <li><a href="{% url 'company_settings:company_view' name=request.user.company.name %}"
+                        class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
                         ⚙️ <span class="ml-2">Settings</span></a></li>
             </ul>
         </nav>
     </div>
     <!-- Logout Button -->
-    <form method="POST" action="{% url 'logout' %}" class="flex items-center">
+    <form method="POST" action="{% url 'users:logout' %}" class="flex items-center">
         {% csrf_token %}
         <button type="submit" class="text-red-600 hover:text-red-700 flex items-center">
             🚪 <span class="ml-2">Logout</span>

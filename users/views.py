@@ -1,11 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.text import slugify
-from django.views.generic import TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 
+from leads.views import AdminRequiredMixin
 from users.forms import AdminSignupForm, CompanySignupForm, CustomLoginForm
+from users.models import CustomUser
 
 
 class SignupView(TemplateView):
@@ -26,10 +30,7 @@ class SignupView(TemplateView):
 
     def form_valid(self, company_form, admin_form):
         # Save company and generate a slug
-        company = company_form.save(commit=False)
-        company.slug = slugify(company.name)  # Create a URL-friendly slug
-        company.save()
-
+        company = company_form.save()
         # Save the admin user and assign the company
         admin_user = admin_form.save(company=company)
 
@@ -61,3 +62,41 @@ class CustomLoginView(LoginView):
         if user.is_authenticated and user.company:
             return reverse_lazy("dashboard", kwargs={"name": user.company.name})
         return reverse_lazy("dashboard")
+
+
+class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+    model = CustomUser
+    form_class = UserCreationForm
+    template_name = "user_create.html"
+    success_url = reverse_lazy("users:user_list")
+
+    def form_valid(self, form):
+        # Save the form and show a success message
+        messages.success(self.request, "User created successfully.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Show error message if the form is invalid
+        messages.error(self.request, "There was an error creating the user.")
+        return super().form_invalid(form)
+
+
+class UserEditView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+    model = CustomUser
+    form_class = UserChangeForm  # Django's built-in UserChangeForm for editing users
+    template_name = "user_edit.html"
+    success_url = reverse_lazy("users:user_list")
+
+    def get_object(self):
+        # This is used to fetch the user based on the URL, allowing you to edit the selected user.
+        return self.get_queryset().get(id=self.kwargs["pk"])
+
+    def form_valid(self, form):
+        messages.success(self.request, "User information updated successfully.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request, "There was an error updating the user information."
+        )
+        return super().form_invalid(form)

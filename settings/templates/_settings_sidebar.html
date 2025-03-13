@@ -6,7 +6,7 @@
     <nav class="mt-6">
         <ul>
             <li>
-                <a href="{% url 'company_settings:company_info' name=request.user.company.name %}"
+                <a href="{% url 'company_settings:company_view' name=request.user.company.name %}"
                     class="block py-2 px-4 text-gray-300 hover:bg-gray-700 hover:text-white transition duration-200">
                     <i class="fas fa-building mr-3"></i> Company Info
                 </a>

@@ -7,12 +7,21 @@ from tenants.models import Company
 from users.models import CustomUser
 
 
-# View for the Company Info section
-class CompanyInfoView(UpdateView):
+class CompanyView(TemplateView):
+    template_name = "company_view.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Retrieve the company data associated with the current user
+        context["company"] = self.request.user.company
+        return context
+
+
+class CompanyEditView(UpdateView):
     model = Company
     form_class = CompanyForm
-    template_name = "company_info.html"
-    success_url = reverse_lazy("company_settings:company_info")
+    template_name = "company_edit.html"
+    success_url = reverse_lazy("company_settings:company_view")
 
     def get_object(self):
         return self.request.user.company
@@ -20,6 +29,13 @@ class CompanyInfoView(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "Company information updated successfully.")
         return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            "There was an error updating the company information.",
+        )
+        return super().form_invalid(form)
 
 
 # View for User Management section
