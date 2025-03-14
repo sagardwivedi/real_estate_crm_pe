@@ -9,5 +9,6 @@ urlpatterns = [
     path("<str:name>/", include("company_admin.urls")),
     path("<str:name>/leads/", include("leads.urls")),
     path("<str:name>/properties/", include("properties.urls")),
+    path("<str:name>/report/", include("reports.urls")),
     path("<str:name>/settings/", include("settings.urls")),
 ] + debug_toolbar_urls()

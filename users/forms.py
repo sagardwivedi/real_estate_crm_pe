@@ -5,84 +5,64 @@ from django.core.exceptions import ValidationError
 from .models import Company, CustomUser
 
 
-class CompanySignupForm(forms.ModelForm):
-    """Form for registering a new real estate company with improved Tailwind styling."""
+class TailwindStyledFormMixin:
+    """Provides Tailwind CSS styling for form fields."""
+
+    form_control_class = (
+        "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 "
+        "rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 "
+        "focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out"
+    )
+
+    def apply_tailwind_classes(self, fields):
+        """Applies Tailwind styles to form fields."""
+        for field_name in fields:
+            self.fields[field_name].widget.attrs["class"] = self.form_control_class
+
+
+class BaseUserForm(forms.ModelForm, TailwindStyledFormMixin):
+    """Abstract base form for user-related forms."""
+
+    def clean_email(self):
+        """Ensure the email is unique and set as the username."""
+        email = self.cleaned_data.get("email")
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError("A user with this email already exists.")
+        return email
+
+    def save(self, commit=True):
+        """Ensure username is set as email before saving."""
+        user = super().save(commit=False)
+        user.username = self.cleaned_data["email"]
+        if commit:
+            user.save()
+        return user
+
+
+class CompanySignupForm(forms.ModelForm, TailwindStyledFormMixin):
+    """Form for registering a new real estate company."""
 
     class Meta:
         model = Company
         fields = ["name", "contact_email", "phone"]
-        widgets = {
-            "name": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Company Name",
-                    "aria-label": "Company Name",
-                }
-            ),
-            "contact_email": forms.EmailInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Company Email",
-                    "aria-label": "Company Email",
-                }
-            ),
-            "phone": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Company Phone Number",
-                    "aria-label": "Company Phone",
-                }
-            ),
-        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_tailwind_classes(self.fields)
 
 
-class AdminSignupForm(UserCreationForm):
-    """Admin user registration with Tailwind styling."""
+class AdminSignupForm(UserCreationForm, BaseUserForm):
+    """Admin user registration form."""
 
-    full_name = forms.CharField(
-        max_length=100,
-        widget=forms.TextInput(
-            attrs={
-                "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                "placeholder": "Full Name",
-                "aria-label": "Full Name",
-            }
-        ),
-    )
+    full_name = forms.CharField(max_length=100)
 
     class Meta:
         model = CustomUser
         fields = ["full_name", "email", "password1", "password2"]
-        widgets = {
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Email Address",
-                    "aria-label": "Email Address",
-                }
-            ),
-            "password1": forms.PasswordInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Create Password",
-                    "aria-label": "Create Password",
-                    "autocomplete": "new-password",
-                }
-            ),
-            "password2": forms.PasswordInput(
-                attrs={
-                    "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                    "placeholder": "Confirm Password",
-                    "aria-label": "Confirm Password",
-                    "autocomplete": "new-password",
-                }
-            ),
-        }
 
     def save(self, company, commit=True):
-        """Save method to associate admin with the company."""
+        """Associate admin user with a company."""
         user = super().save(commit=False)
-        user.username = self.cleaned_data["email"]
         user.company = company
         user.role = "admin"
         if commit:
@@ -90,29 +70,15 @@ class AdminSignupForm(UserCreationForm):
         return user
 
 
-class CustomLoginForm(AuthenticationForm):
-    """Custom login form with improved Tailwind styling."""
+class CustomLoginForm(AuthenticationForm, TailwindStyledFormMixin):
+    """Custom login form with Tailwind styling."""
 
-    username = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
-                "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                "placeholder": "Enter your email",
-                "aria-label": "Email",
-            }
-        )
-    )
+    username = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput())
 
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-900 dark:text-white transition duration-200 ease-in-out",
-                "placeholder": "Enter your password",
-                "aria-label": "Password",
-                "autocomplete": "current-password",
-            }
-        )
-    )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_tailwind_classes(["username", "password"])
 
     def confirm_login_allowed(self, user):
         """Ensure only active users can log in."""
@@ -123,87 +89,39 @@ class CustomLoginForm(AuthenticationForm):
             )
 
 
-class UserCreateForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                "placeholder": "Password",
-            }
-        ),
-        help_text="Set a secure password for this user.",
-    )
+class UserCreateForm(BaseUserForm):
+    """Form for creating a new user."""
+
+    password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = CustomUser
         fields = ["first_name", "last_name", "email", "role", "password"]
 
-        widgets = {
-            "first_name": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "First Name",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "Last Name",
-                }
-            ),
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "Email Address",
-                }
-            ),
-            "role": forms.Select(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                }
-            ),
-        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_tailwind_classes(self.fields)
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password"])
-        if commit:
-            user.save()
-        return user
+    def clean(self):
+        """Ensure passwords match."""
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password_confirm = self.data.get("password_confirm")
+
+        if password and password_confirm and password != password_confirm:
+            self.add_error("password_confirm", "Passwords do not match.")
+
+        return cleaned_data
 
 
-class UserEditForm(forms.ModelForm):
+# ✅ 7. User Edit Form
+class UserEditForm(BaseUserForm):
+    """Form for editing user details."""
+
     class Meta:
         model = CustomUser
-        fields = [
-            "first_name",
-            "last_name",
-            "email",
-            "role",
-        ]
+        fields = ["first_name", "last_name", "email", "role"]
 
-        widgets = {
-            "first_name": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "First Name",
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "Last Name",
-                }
-            ),
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                    "placeholder": "Email Address",
-                }
-            ),
-            "role": forms.Select(
-                attrs={
-                    "class": "w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white",
-                }
-            ),
-        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_tailwind_classes(self.fields)

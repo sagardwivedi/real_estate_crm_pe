@@ -6,7 +6,9 @@ from tenants.models import Company
 
 
 class CustomUser(AbstractUser):
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, null=True, blank=True
+    )
     ROLE_CHOICES = [
         ("admin", "Admin"),
         ("agent", "Agent"),

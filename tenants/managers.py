@@ -15,12 +15,16 @@ class TenantManager(BaseUserManager):  # Extending BaseUserManager
 
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError("The Email field must be set")
-        email = self.normalize_email(email)  # Now it works ✅
-        extra_fields.setdefault("is_active", True)
-
+            raise ValueError("Users must have an email address")
+        email = self.normalize_email(email)
+        extra_fields.setdefault("username", email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
+
+        # Enforce company requirement for non-superusers
+        if not user.is_superuser and not extra_fields.get("company"):
+            raise ValueError("A company is required for non-superusers.")
+
         user.save(using=self._db)
         return user
 

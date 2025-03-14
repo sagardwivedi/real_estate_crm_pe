@@ -12,7 +12,7 @@
                 <li><a href="{% url 'properties:property_list' name=request.user.company.name %}"
                         class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
                         🏢 <span class="ml-2">Properties</span></a></li>
-                <li><a href="#" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
+                <li><a href="{% url 'reports:dashboard' name=request.user.company.name %}" class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">
                         📊 <span class="ml-2">Reports</span></a></li>
                 <li><a href="{% url 'company_settings:company_view' name=request.user.company.name %}"
                         class="flex items-center text-gray-700 dark:text-gray-300 hover:text-blue-600">

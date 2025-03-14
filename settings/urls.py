@@ -3,7 +3,6 @@ from django.urls import path
 from .views import (
     CompanyEditView,
     CompanyView,
-    SecurityView,
     SubscriptionView,
     UserManagementView,
 )
@@ -15,5 +14,4 @@ urlpatterns = [
     path("company/edit/", CompanyEditView.as_view(), name="company_edit"),  # Edit view
     path("user-management/", UserManagementView.as_view(), name="user_management"),
     path("subscription/", SubscriptionView.as_view(), name="subscription"),
-    path("security/", SecurityView.as_view(), name="security"),
 ]

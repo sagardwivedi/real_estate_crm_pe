@@ -55,16 +55,5 @@ class SubscriptionView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         company = self.request.user.company
-        context["subscription"] = (
-            company.subscription_plan
-        )  # Assuming company has a subscription plan
-        return context
-
-
-# View for Security settings
-class SecurityView(TemplateView):
-    template_name = "security.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context["subscription"] = company.subscription_plan
         return context

@@ -61,7 +61,7 @@ class SignupView(TemplateView):
 
 
 class CustomLoginView(LoginView):
-    """Custom login view with improved redirection logic."""
+    """Custom login view with role-based redirection."""
 
     template_name = "login.html"
     form_class = CustomLoginForm
@@ -69,8 +69,20 @@ class CustomLoginView(LoginView):
 
     def get_success_url(self):
         user = self.request.user
-        if user.is_authenticated and user.company:
+
+        if not user.is_authenticated or not user.company:
+            return reverse_lazy("dashboard")
+
+        if user.role == "admin":
             return reverse_lazy("dashboard", kwargs={"name": user.company.name})
+        elif user.role == "agent":
+            return reverse_lazy("agent_dashboard", kwargs={"name": user.company.name})
+        elif user.role == "sales_manager":
+            return reverse_lazy(
+                "sales_manager_dashboard", kwargs={"name": user.company.name}
+            )
+
+        # Default fallback
         return reverse_lazy("dashboard")
 
 
@@ -90,7 +102,6 @@ class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
 
         user = form.save(commit=False)
         user.company = company
-        user.set_password(form.cleaned_data["password"])  # Ensure password is hashed
         user.save()
 
         messages.success(self.request, "User created successfully.")
