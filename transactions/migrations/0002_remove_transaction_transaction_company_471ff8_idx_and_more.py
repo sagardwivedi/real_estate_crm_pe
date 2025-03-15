@@ -5,30 +5,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('properties', '0002_remove_property_properties__company_5ff745_idx_and_more'),
-        ('tenants', '0001_initial'),
-        ('transactions', '0001_initial'),
+        ("properties", "0002_remove_property_properties__company_5ff745_idx_and_more"),
+        ("tenants", "0001_initial"),
+        ("transactions", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveIndex(
-            model_name='transaction',
-            name='transaction_company_471ff8_idx',
+            model_name="transaction",
+            name="transaction_company_471ff8_idx",
         ),
         migrations.RemoveField(
-            model_name='transaction',
-            name='company_id',
+            model_name="transaction",
+            name="company_id",
         ),
         migrations.AddField(
-            model_name='transaction',
-            name='company',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='tenants.company'),
+            model_name="transaction",
+            name="company",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="tenants.company",
+            ),
             preserve_default=False,
         ),
         migrations.AddIndex(
-            model_name='transaction',
-            index=models.Index(fields=['company', 'created_at'], name='transaction_company_471ff8_idx'),
+            model_name="transaction",
+            index=models.Index(
+                fields=["company", "created_at"], name="transaction_company_471ff8_idx"
+            ),
         ),
     ]

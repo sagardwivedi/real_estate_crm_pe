@@ -23,16 +23,28 @@ class TenantMiddleware(MiddlewareMixin):
 
     def process_request(self, request: HttpRequest):
         """Checks if the user is authenticated and sets the company."""
+
+        # If user is authenticated, set the company in thread-local storage
         if request.user.is_authenticated and hasattr(request.user, "company"):
             set_current_company(request.user.company)
-        else:
-            # Allow access to login, signup, and Django admin
-            excluded_paths = [reverse("users:login"), reverse("users:signup")]
-            if request.path.startswith("/admin") or request.path in excluded_paths:
-                return  # Allow access
+            return  # Allow the request to proceed
 
-            # Redirect unauthenticated users to the login page
-            return redirect(reverse("users:login"))
+        # Define allowed paths
+        allowed_paths = {
+            reverse("users:login"),
+            reverse("users:signup"),
+            reverse("landing"),
+        }
+
+        # Allow access to specific routes
+        if (
+            request.path.startswith(("/admin", "/__debug__/"))
+            or request.path in allowed_paths
+        ):
+            return  # Allow access
+
+        # Redirect unauthenticated users to the login page
+        return redirect(reverse("users:login"))
 
     def process_response(self, request: HttpRequest, response: HttpResponse):
         """Clears the company reference after the request is processed."""

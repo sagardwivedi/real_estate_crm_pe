@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "django_tailwind_cli",
+    "django_typer",
     "landing",
     "properties",
     "users",
@@ -47,7 +48,7 @@ INSTALLED_APPS = [
     "company_admin",
     "leads",
     "settings",
-    "reports"
+    "reports",
 ]
 
 MIDDLEWARE = [

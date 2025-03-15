@@ -20,10 +20,7 @@ class ReportFilterForm(forms.Form, TailwindStyledFormMixin):
             }
         ),
     )
-    role = forms.ChoiceField(
-        choices=[("", "All Roles"), ("admin", "Admin"), ("agent", "Agent")],
-        required=False,
-    )
+
     email = forms.CharField(
         required=False,
         widget=forms.TextInput(attrs={"placeholder": "Search by email"}),
@@ -31,4 +28,4 @@ class ReportFilterForm(forms.Form, TailwindStyledFormMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.apply_tailwind_classes(["start_date", "end_date", "role", "email"])
+        self.apply_tailwind_classes(["start_date", "end_date", "email"])

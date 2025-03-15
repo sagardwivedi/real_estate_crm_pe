@@ -15,9 +15,25 @@ class TailwindStyledFormMixin:
     )
 
     def apply_tailwind_classes(self, fields):
-        """Applies Tailwind styles to form fields."""
+        """Applies Tailwind styles and placeholders to form fields."""
+        placeholders = {
+            "name": "Enter company name",
+            "contact_email": "Enter company email",
+            "phone": "Enter company phone number",
+            "first_name": "Enter your first name",
+            "last_name": "Enter your last name",
+            "email": "Enter your email address",
+            "password1": "Create a password",
+            "password2": "Confirm your password",
+            "username": "Enter your username",
+            "password": "Enter your password",
+        }
+
         for field_name in fields:
-            self.fields[field_name].widget.attrs["class"] = self.form_control_class
+            field = self.fields[field_name]
+            field.widget.attrs["class"] = self.form_control_class
+            if field_name in placeholders:
+                field.widget.attrs["placeholder"] = placeholders[field_name]
 
 
 class BaseUserForm(forms.ModelForm, TailwindStyledFormMixin):
@@ -51,30 +67,34 @@ class CompanySignupForm(forms.ModelForm, TailwindStyledFormMixin):
         self.apply_tailwind_classes(self.fields)
 
 
-class AdminSignupForm(UserCreationForm, BaseUserForm):
+class AdminSignupForm(UserCreationForm, TailwindStyledFormMixin):
     """Admin user registration form."""
-
-    full_name = forms.CharField(max_length=100)
 
     class Meta:
         model = CustomUser
-        fields = ["full_name", "email", "password1", "password2"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "password1",
+            "password2",
+        ]
 
-    def save(self, company, commit=True):
-        """Associate admin user with a company."""
-        user = super().save(commit=False)
-        user.company = company
-        user.role = "admin"
-        if commit:
-            user.save()
-        return user
+    def clean_email(self):
+        """Ensure email is unique."""
+        email = self.cleaned_data.get("email")
+        if CustomUser.objects.filter(email=email).exists():
+            raise ValidationError("An account with this email already exists.")
+        return email
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_tailwind_classes(self.fields)
 
 
 class CustomLoginForm(AuthenticationForm, TailwindStyledFormMixin):
     """Custom login form with Tailwind styling."""
-
-    username = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -92,11 +112,13 @@ class CustomLoginForm(AuthenticationForm, TailwindStyledFormMixin):
 class UserCreateForm(BaseUserForm):
     """Form for creating a new user."""
 
-    password = forms.CharField(widget=forms.PasswordInput())
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"placeholder": "Create a password"})
+    )
 
     class Meta:
         model = CustomUser
-        fields = ["first_name", "last_name", "email", "role", "password"]
+        fields = ["first_name", "last_name", "email", "password"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -114,13 +136,12 @@ class UserCreateForm(BaseUserForm):
         return cleaned_data
 
 
-# ✅ 7. User Edit Form
 class UserEditForm(BaseUserForm):
     """Form for editing user details."""
 
     class Meta:
         model = CustomUser
-        fields = ["first_name", "last_name", "email", "role"]
+        fields = ["first_name", "last_name", "email"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

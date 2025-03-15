@@ -34,13 +34,10 @@ class ReportDashboardView(LoginRequiredMixin, TemplateView):
             # Extract valid data from the form
             start_date = form.cleaned_data.get("start_date") or start_date
             end_date = form.cleaned_data.get("end_date") or end_date
-            user_role = form.cleaned_data.get("role")
             search_email = form.cleaned_data.get("email")
 
         # Filter Users
         user_query = Q()
-        if user_role:
-            user_query &= Q(role=user_role)
         if search_email:
             user_query &= Q(email__icontains=search_email)
 
@@ -88,7 +85,6 @@ class ExportReportCSVView(LoginRequiredMixin, View):
         # Get filter parameters
         start_date = request.GET.get("start_date")
         end_date = request.GET.get("end_date")
-        user_role = request.GET.get("role")
         search_email = request.GET.get("email")
 
         # Default date range: Last 30 days
@@ -103,9 +99,7 @@ class ExportReportCSVView(LoginRequiredMixin, View):
             end_date = now().strptime(end_date, "%Y-%m-%d").date()
 
         # Filter Users
-        user_query = models.Q(company=company)
-        if user_role:
-            user_query &= models.Q(role=user_role)
+        user_query = models.Q()
         if search_email:
             user_query &= models.Q(email__icontains=search_email)
 

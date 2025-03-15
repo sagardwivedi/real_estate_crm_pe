@@ -4,27 +4,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Property',
+            name="Property",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('company_id', models.IntegerField()),
-                ('title', models.CharField(max_length=255)),
-                ('address', models.TextField()),
-                ('price', models.DecimalField(decimal_places=2, max_digits=12)),
-                ('bedrooms', models.IntegerField()),
-                ('bathrooms', models.IntegerField()),
-                ('listed_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("company_id", models.IntegerField()),
+                ("title", models.CharField(max_length=255)),
+                ("address", models.TextField()),
+                ("price", models.DecimalField(decimal_places=2, max_digits=12)),
+                ("bedrooms", models.IntegerField()),
+                ("bathrooms", models.IntegerField()),
+                ("listed_at", models.DateTimeField(auto_now_add=True)),
             ],
             options={
-                'indexes': [models.Index(fields=['company_id', 'price'], name='properties__company_5ff745_idx'), models.Index(fields=['company_id', 'listed_at'], name='properties__company_d17e55_idx')],
+                "indexes": [
+                    models.Index(
+                        fields=["company_id", "price"],
+                        name="properties__company_5ff745_idx",
+                    ),
+                    models.Index(
+                        fields=["company_id", "listed_at"],
+                        name="properties__company_d17e55_idx",
+                    ),
+                ],
             },
         ),
     ]

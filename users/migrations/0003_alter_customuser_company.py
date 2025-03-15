@@ -5,16 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tenants', '0002_company_address_company_description_and_more'),
-        ('users', '0002_alter_customuser_managers_alter_customuser_role'),
+        ("tenants", "0002_company_address_company_description_and_more"),
+        ("users", "0002_alter_customuser_managers_alter_customuser_role"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='customuser',
-            name='company',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='tenants.company'),
+            model_name="customuser",
+            name="company",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="tenants.company",
+            ),
         ),
     ]

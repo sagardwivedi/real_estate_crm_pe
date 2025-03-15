@@ -6,16 +6,18 @@ from tenants.models import Company
 
 
 class CustomUser(AbstractUser):
-    company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, null=True, blank=True
-    )
-    ROLE_CHOICES = [
-        ("admin", "Admin"),
-        ("agent", "Agent"),
-    ]
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="admin")
+    """Custom user model supporting tenant-based filtering."""
 
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    theme_preference = models.CharField(
+        max_length=10, choices=[("light", "Light"), ("dark", "Dark")], default="light"
+    )
     objects = TenantManager()
 
     def __str__(self):
-        return f"{self.username} ({self.role})"
+        return self.username

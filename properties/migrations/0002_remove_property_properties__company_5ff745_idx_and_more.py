@@ -5,37 +5,44 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('properties', '0001_initial'),
-        ('tenants', '0001_initial'),
+        ("properties", "0001_initial"),
+        ("tenants", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveIndex(
-            model_name='property',
-            name='properties__company_5ff745_idx',
+            model_name="property",
+            name="properties__company_5ff745_idx",
         ),
         migrations.RemoveIndex(
-            model_name='property',
-            name='properties__company_d17e55_idx',
+            model_name="property",
+            name="properties__company_d17e55_idx",
         ),
         migrations.RemoveField(
-            model_name='property',
-            name='company_id',
+            model_name="property",
+            name="company_id",
         ),
         migrations.AddField(
-            model_name='property',
-            name='company',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='tenants.company'),
+            model_name="property",
+            name="company",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="tenants.company",
+            ),
             preserve_default=False,
         ),
         migrations.AddIndex(
-            model_name='property',
-            index=models.Index(fields=['company', 'price'], name='properties__company_5ff745_idx'),
+            model_name="property",
+            index=models.Index(
+                fields=["company", "price"], name="properties__company_5ff745_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='property',
-            index=models.Index(fields=['company', 'listed_at'], name='properties__company_d17e55_idx'),
+            model_name="property",
+            index=models.Index(
+                fields=["company", "listed_at"], name="properties__company_d17e55_idx"
+            ),
         ),
     ]

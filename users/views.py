@@ -1,12 +1,16 @@
+import json
+
 from django.contrib import messages
-from django.contrib.auth import login
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, TemplateView, UpdateView
 
-from leads.views import AdminRequiredMixin
+from leads.views import GroupRequiredMixin
 from tenants.middleware import get_current_company
 from users.forms import (
     AdminSignupForm,
@@ -16,40 +20,27 @@ from users.forms import (
     UserEditForm,
 )
 from users.models import CustomUser
+from users.service import UserRedirectionService, UserSignupService
 
 
 class SignupView(TemplateView):
     template_name = "signup.html"
 
-    def get(self, request, *args, **kwargs):
-        return self.render_to_response(self.get_context_data())
-
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         company_form = CompanySignupForm(request.POST)
         admin_form = AdminSignupForm(request.POST)
 
         if company_form.is_valid() and admin_form.is_valid():
-            return self.form_valid(company_form, admin_form)
+            company = UserSignupService.create_company_admin(
+                company_form, admin_form, request
+            )
+            messages.success(request, "Company and admin account created successfully!")
+            return redirect(reverse_lazy("dashboard", kwargs={"name": company.name}))
 
         messages.error(request, "Please correct the errors below.")
         return self.render_to_response(
             self.get_context_data(company_form=company_form, admin_form=admin_form)
         )
-
-    def form_valid(self, company_form, admin_form):
-        """Handles valid form submission by creating a company and an admin user."""
-        company = company_form.save()
-        admin_user = admin_form.save(commit=False)
-        admin_user.company = company
-        admin_user.role = "admin"
-        admin_user.save()
-
-        login(self.request, admin_user)
-        messages.success(
-            self.request, "Company and admin account created successfully!"
-        )
-
-        return redirect(reverse_lazy("dashboard", kwargs={"name": company.name}))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,25 +59,10 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        user = self.request.user
-
-        if not user.is_authenticated or not user.company:
-            return reverse_lazy("dashboard")
-
-        if user.role == "admin":
-            return reverse_lazy("dashboard", kwargs={"name": user.company.name})
-        elif user.role == "agent":
-            return reverse_lazy("agent_dashboard", kwargs={"name": user.company.name})
-        elif user.role == "sales_manager":
-            return reverse_lazy(
-                "sales_manager_dashboard", kwargs={"name": user.company.name}
-            )
-
-        # Default fallback
-        return reverse_lazy("dashboard")
+        return UserRedirectionService.get_redirect_url(self.request.user)
 
 
-class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
+class UserCreateView(GroupRequiredMixin, CreateView):
     """Admin-only view for creating users within the company."""
 
     model = CustomUser
@@ -94,7 +70,6 @@ class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
     template_name = "user_create.html"
 
     def form_valid(self, form):
-        """Assigns the company to the new user and saves it."""
         company = get_current_company()
         if not company:
             messages.error(self.request, "No active company found.")
@@ -114,7 +89,7 @@ class UserCreateView(LoginRequiredMixin, AdminRequiredMixin, CreateView):
         )
 
 
-class UserEditView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
+class UserEditView(GroupRequiredMixin, UpdateView):
     """Allows admins to edit user details."""
 
     model = CustomUser
@@ -136,3 +111,33 @@ class UserEditView(LoginRequiredMixin, AdminRequiredMixin, UpdateView):
             "company_settings:user_management",
             kwargs={"name": self.request.user.company.name},
         )
+
+
+class GetUserThemeView(View):
+    """Fetches the user's theme preference from the database."""
+
+    def get(self, request, *args, **kwargs):
+        return JsonResponse({"theme": request.user.theme_preference})
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class SetUserThemeView(View):
+    """Updates the user's theme preference and syncs with LocalStorage."""
+
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            new_theme = data.get("theme")
+
+            if new_theme not in ["light", "dark"]:
+                return JsonResponse({"error": "Invalid theme"}, status=400)
+
+            # Save in database
+            request.user.theme_preference = new_theme
+            request.user.save()
+
+            return JsonResponse(
+                {"message": "Theme updated successfully", "theme": new_theme}
+            )
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)

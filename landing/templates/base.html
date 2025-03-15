@@ -1,17 +1,23 @@
 {% load tailwind_cli %}
 <!DOCTYPE html>
-<html lang="{{ LANGUAGE_CODE }}" class="dark:bg-gray-900 dark:text-white">
+<html>
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
+    <script>
+        (function () {
+            let theme = localStorage.getItem("theme") || "light";
+            document.documentElement.classList.add(theme);
+        })();
+    </script>
     {% tailwind_css %}
     {% block extra_head %}{% endblock extra_head %}
 </head>
 
-<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
+<body class="min-h-screen bg-gray-50 text-gray-900 transition-colors duration-300 dark:bg-gray-800 dark:text-gray-100">
     {% block content %}
     {% endblock content %}
     {% block extra_body %}{% endblock extra_body %}

@@ -3,15 +3,18 @@
 {% block title %}Login - Real Estate CRM{% endblock title %}
 
 {% block content %}
-<div class="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
+<div class="flex justify-center items-center bg-gradient-to-br from-primary-500 to-primary-700 
+    dark:from-gray-800 dark:to-gray-900 text-white min-h-screen px-4">
+
     <div class="w-full max-w-md bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+
         <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white">
             🔑 Sign in to Your Account
         </h2>
 
         {% if form.errors %}
-        <div class="mt-4 p-3 text-sm text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 rounded-lg">
-            Invalid credentials. Please try again.
+        <div class="mt-4 p-3 text-sm text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300 rounded-lg shadow">
+            ⚠️ Invalid credentials. Please try again.
         </div>
         {% endif %}
 
@@ -19,25 +22,40 @@
             {% csrf_token %}
 
             <div class="grid grid-cols-1 gap-4">
+                <!-- Email Field -->
                 <div>
                     <label class="block text-gray-700 dark:text-gray-300 font-medium">Email</label>
-                    {{ form.username }}
+                    <div class="relative">
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.username.errors.0 }}</p>
+                    {% endif %}
                 </div>
 
+                <!-- Password Field -->
                 <div>
                     <label class="block text-gray-700 dark:text-gray-300 font-medium">Password</label>
-                    {{ form.password }}
+                    <div class="relative">
+                        {{ form.password }}
+                    </div>
+                    {% if form.password.errors %}
+                    <p class="text-red-500 text-sm mt-1">{{ form.password.errors.0 }}</p>
+                    {% endif %}
                 </div>
             </div>
 
+            <!-- Submit Button -->
             <button type="submit" class="w-full py-3 text-white font-semibold text-lg rounded-lg transition duration-300
-                bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600
+                bg-gradient-to-r from-blue-600 to-blue-500 hover:scale-[1.02] hover:shadow-md 
+                hover:from-blue-700 hover:to-blue-600
                 dark:from-blue-500 dark:to-blue-400 dark:hover:from-blue-600 dark:hover:to-blue-500">
                 🔓 Login
             </button>
         </form>
 
-        <p class="text-center mt-6 text-gray-600 dark:text-gray-400 text-sm">
+        <!-- Sign Up Link -->
+        <p class="text-center mt-4 text-gray-600 dark:text-gray-400 text-sm">
             Don't have an account?
             <a href="{% url 'users:signup' %}" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
                 Sign Up

@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('tenants', '0001_initial'),
+        ("tenants", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='company',
-            name='address',
+            model_name="company",
+            name="address",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='company',
-            name='description',
+            model_name="company",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='company',
-            name='subscription_plan',
-            field=models.CharField(default='Free', max_length=100),
+            model_name="company",
+            name="subscription_plan",
+            field=models.CharField(default="Free", max_length=100),
         ),
         migrations.AddField(
-            model_name='company',
-            name='website',
+            model_name="company",
+            name="website",
             field=models.URLField(blank=True, null=True),
         ),
     ]

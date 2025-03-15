@@ -5,26 +5,44 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('properties', '0001_initial'),
+        ("properties", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Transaction',
+            name="Transaction",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('company_id', models.IntegerField()),
-                ('buyer_name', models.CharField(max_length=255)),
-                ('sale_price', models.DecimalField(decimal_places=2, max_digits=12)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('property', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='properties.property')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("company_id", models.IntegerField()),
+                ("buyer_name", models.CharField(max_length=255)),
+                ("sale_price", models.DecimalField(decimal_places=2, max_digits=12)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "property",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="properties.property",
+                    ),
+                ),
             ],
             options={
-                'indexes': [models.Index(fields=['company_id', 'created_at'], name='transaction_company_471ff8_idx')],
+                "indexes": [
+                    models.Index(
+                        fields=["company_id", "created_at"],
+                        name="transaction_company_471ff8_idx",
+                    )
+                ],
             },
         ),
     ]
