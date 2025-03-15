@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0004_remove_customuser_role'),
+        ("users", "0004_remove_customuser_role"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customuser',
-            name='theme_preference',
-            field=models.CharField(choices=[('light', 'Light'), ('dark', 'Dark')], default='light', max_length=10),
+            model_name="customuser",
+            name="theme_preference",
+            field=models.CharField(
+                choices=[("light", "Light"), ("dark", "Dark")],
+                default="light",
+                max_length=10,
+            ),
         ),
     ]
