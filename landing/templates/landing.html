@@ -1,219 +1,95 @@
 {% extends 'base.html' %}
 
-{% block title %}Real Estate CRM - Manage Your Properties Efficiently{% endblock title %}
+{% block title %}
+  Real Estate CRM - Manage Your Properties Efficiently
+{% endblock %}
 
 {% block content %}
-{% load static %}
+  {% load static %}
 
-<!-- Enhanced Sticky Navbar -->
-<nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm fixed top-0 w-full z-50">
+  <!-- Enhanced Sticky Navbar -->
+  <nav class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm fixed top-0 w-full z-50">
     <div class="container mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 py-4">
-        <!-- Logo -->
-        <a class="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
-            href="{% url 'landing' %}">
-            <span class="text-primary-600 dark:text-primary-400">RE</span>CRM
-        </a>
+      <!-- Logo -->
+      <a class="text-2xl font-bold text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400 transition-colors" href="{% url 'landing' %}"><span class="text-primary-600 dark:text-primary-400">RE</span>CRM</a>
 
-        <!-- Right Side: Theme Toggle + Get Started -->
-        <div class="flex items-center gap-4">
-            <!-- Theme Toggle Button -->
-            <button id="theme-toggle"
-                class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300">
-                <span id="theme-icon">🌙</span>
-            </button>
+      <!-- Right Side: Theme Toggle + Get Started -->
+      <div class="flex items-center gap-4">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition duration-300"><span id="theme-icon">🌙</span></button>
 
-            <!-- Get Started Button -->
-            <a class="bg-primary-600 dark:bg-primary-500 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors font-medium shadow-sm hover:shadow-md"
-                href="{% url 'users:login' %}">
-                Get Started
-            </a>
-        </div>
+        <!-- Get Started Button -->
+        <a class="bg-primary-600 dark:bg-primary-500 text-white px-6 py-2.5 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors font-medium shadow-sm hover:shadow-md" href="{% url 'users:login' %}">Get Started</a>
+      </div>
     </div>
-</nav>
+  </nav>
 
-<!-- Hero Section with Subtle Gradient -->
-<section
-    class="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900 text-white pt-32 pb-24 px-6">
+  <!-- Hero Section with Subtle Gradient -->
+  <section class="bg-gradient-to-br from-primary-500 to-primary-700 dark:from-gray-800 dark:to-gray-900 text-white pt-32 pb-24 px-6">
     <div class="container mx-auto max-w-4xl text-center">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">
-            Transform Your Real Estate Business
-        </h1>
-        <p class="text-lg md:text-xl text-primary-100 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Streamline property management, client relationships, and sales tracking with our intelligent CRM platform.
-        </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
-            <a class="bg-white dark:bg-gray-800 text-primary-600 dark:text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl"
-                href="{% url 'users:signup' %}">
-                Start Free Trial
-            </a>
-            <a class="border-2 border-white/20 text-primary-50 dark:text-gray-300 px-8 py-4 rounded-lg font-semibold hover:border-white/40 transition-colors"
-                href="#features">
-                Learn More
-            </a>
-        </div>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-6">Transform Your Real Estate Business</h1>
+      <p class="text-lg md:text-xl text-primary-100 dark:text-gray-300 mb-8 max-w-2xl mx-auto">Streamline property management, client relationships, and sales tracking with our intelligent CRM platform.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a class="bg-white dark:bg-gray-800 text-primary-600 dark:text-white px-8 py-4 rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-lg hover:shadow-xl" href="{% url 'users:signup' %}">Start Free Trial</a>
+        <a class="border-2 border-white/20 text-primary-50 dark:text-gray-300 px-8 py-4 rounded-lg font-semibold hover:border-white/40 transition-colors" href="#features">Learn More</a>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Features Section with Enhanced Cards -->
-<section id="features" class="py-20 bg-gray-50 dark:bg-gray-900/30">
+  <!-- Features Section with Enhanced Cards -->
+  <section id="features" class="py-20 bg-gray-50 dark:bg-gray-900/30">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl mx-auto text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                Powerful Features for Modern Brokers
-            </h2>
-            <p class="text-gray-600 dark:text-gray-400 text-lg">
-                Everything you need to manage your real estate business effectively
-            </p>
+      <div class="max-w-3xl mx-auto text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Powerful Features for Modern Brokers</h2>
+        <p class="text-gray-600 dark:text-gray-400 text-lg">Everything you need to manage your real estate business effectively</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Property Management Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+          <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
+            <img src="{% static 'icons/property.svg' %}" alt="Property" class="w-10 h-10 text-primary-600" />
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Property Management</h3>
+          <p class="text-gray-600 dark:text-gray-400">Organize listings, track availability, and manage property details with ease.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Property Management Card -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
-                <div
-                    class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
-                    <img src="{% static 'icons/property.svg' %}" alt="Property" class="w-10 h-10 text-primary-600">
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                    Property Management
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Organize listings, track availability, and manage property details with ease.
-                </p>
-            </div>
-
-            <!-- Client Tracking Card -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
-                <div
-                    class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
-                    <img src="{% static 'icons/clients.svg' %}" alt="Clients" class="w-10 h-10 text-primary-600">
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                    Client Management
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Maintain detailed client profiles and track communication history.
-                </p>
-            </div>
-
-            <!-- Analytics Card -->
-            <div
-                class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
-                <div
-                    class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
-                    <img src="{% static 'icons/analytics.svg' %}" alt="Analytics" class="w-10 h-10 text-primary-600">
-                </div>
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                    Smart Analytics
-                </h3>
-                <p class="text-gray-600 dark:text-gray-400">
-                    Get real-time insights and performance metrics for your business.
-                </p>
-            </div>
+        <!-- Client Tracking Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+          <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
+            <img src="{% static 'icons/clients.svg' %}" alt="Clients" class="w-10 h-10 text-primary-600" />
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Client Management</h3>
+          <p class="text-gray-600 dark:text-gray-400">Maintain detailed client profiles and track communication history.</p>
         </div>
+
+        <!-- Analytics Card -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 dark:border-gray-700">
+          <div class="w-16 h-16 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center justify-center mb-6">
+            <img src="{% static 'icons/analytics.svg' %}" alt="Analytics" class="w-10 h-10 text-primary-600" />
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Smart Analytics</h3>
+          <p class="text-gray-600 dark:text-gray-400">Get real-time insights and performance metrics for your business.</p>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Enhanced CTA Section -->
-<section class="bg-gray-100 dark:bg-gray-800/50 py-20">
+  <!-- Enhanced CTA Section -->
+  <section class="bg-gray-100 dark:bg-gray-800/50 py-20">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div class="max-w-2xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-                Ready to Transform Your Business?
-            </h2>
-            <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                Join hundreds of real estate professionals already boosting their productivity
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="{% url 'users:signup' %}"
-                    class="bg-primary-600 dark:bg-primary-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-lg hover:shadow-xl">
-                    Start Your Free Trial
-                </a>
-                <a href="#features"
-                    class="px-8 py-4 rounded-lg font-semibold text-primary-600 dark:text-primary-400 hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors">
-                    See All Features
-                </a>
-            </div>
+      <div class="max-w-2xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">Ready to Transform Your Business?</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Join hundreds of real estate professionals already boosting their productivity</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a href="{% url 'users:signup' %}" class="bg-primary-600 dark:bg-primary-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-700 dark:hover:bg-primary-600 transition-colors shadow-lg hover:shadow-xl">Start Your Free Trial</a>
+          <a href="#features" class="px-8 py-4 rounded-lg font-semibold text-primary-600 dark:text-primary-400 hover:bg-gray-200 dark:hover:bg-gray-700/50 transition-colors">See All Features</a>
         </div>
+      </div>
     </div>
-</section>
+  </section>
 
-{% block extra_body %}
-<script>
-document.addEventListener("DOMContentLoaded", async function () {
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeIcon = document.getElementById("theme-icon");
-    let theme = localStorage.getItem("theme") || "light"; // Load from localStorage
-
-    applyTheme(theme);
-
-    // Fetch user theme if logged in
-    try {
-        const response = await fetch("/get-user-theme/");
-        if (response.ok) {
-            const data = await response.json();
-            if (data.theme && data.theme !== theme) {
-                theme = data.theme;
-                localStorage.setItem("theme", theme);
-                applyTheme(theme);
-            }
-        }
-    } catch (error) {
-        console.warn("Not logged in or error fetching theme. Using LocalStorage theme.");
-    }
-
-    if (themeToggle) {
-        themeToggle.addEventListener("click", async () => {
-            theme = theme === "dark" ? "light" : "dark";
-            localStorage.setItem("theme", theme);
-            applyTheme(theme);
-
-            // Update theme in database if logged in
-            try {
-                const csrfToken = getCookie("csrftoken");
-                if (csrfToken) {
-                    await fetch("/set-user-theme/", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": csrfToken,
-                        },
-                        body: JSON.stringify({ theme }),
-                    });
-                } else {
-                    console.warn("CSRF token not found. Theme update request may fail.");
-                }
-            } catch (error) {
-                console.warn("Error updating theme in database.");
-            }
-        });
-    }
-
-    function applyTheme(theme) {
-        document.documentElement.classList.remove("dark", "light");
-        document.documentElement.classList.add(theme);
-        
-        if (themeIcon) {
-            themeIcon.textContent = theme === "dark" ? "☀️" : "🌙";
-        }
-    }
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie) {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                cookie = cookie.trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-});
-</script>
-{% endblock extra_body %}
-{% endblock content %}
+  {% block extra_body %}
+    <script src="{% static 'js/toggle_theme.js' %}"></script>
+  {% endblock %}
+{% endblock %}
