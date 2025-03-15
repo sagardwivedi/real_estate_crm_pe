@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Fetch user theme if logged in
     try {
-        const response = await fetch('/get-user-theme/')
+        const response = await fetch('http://127.0.0.1:8008/get-user-theme/')
         if (response.ok) {
             const data = await response.json()
             if (data.theme && data.theme !== theme) {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             try {
                 const csrfToken = getCookie('csrftoken')
                 if (csrfToken) {
-                    await fetch('/set-user-theme/', {
+                    await fetch('http://127.0.0.1:8008/set-user-theme/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
