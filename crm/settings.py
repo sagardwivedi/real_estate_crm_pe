@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-ac+@nmypiz-&=_&t4-&nd33rp&y-^q$&_4he%5w#+_*q^u#-bo
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["realestate-crm-7lga.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
