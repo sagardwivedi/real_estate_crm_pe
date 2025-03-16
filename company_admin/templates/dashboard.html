@@ -1,96 +1,86 @@
 {% extends 'dashboard_base.html' %}
 
 {% block dashboard_content %}
-<!-- Top Header -->
-<div class="flex justify-between items-center mb-8">
+  <!-- Top Header -->
+  <div class="flex justify-between items-center mb-8">
     <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-</div>
+  </div>
 
-<!-- Stats Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     <!-- Total Leads Card -->
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div class="flex items-center">
-            <div class="bg-primary-100 text-primary-600 p-3 rounded-full">
-                📋
-            </div>
-            <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Total Leads</h3>
-                <p class="text-2xl font-bold text-primary-600">124</p>
-            </div>
+      <div class="flex items-center">
+        <div class="bg-primary-100 text-primary-600 p-3 rounded-full">📋</div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Total Leads</h3>
+          <p class="text-2xl font-bold text-primary-600">124</p>
         </div>
+      </div>
     </div>
 
     <!-- Active Properties Card -->
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div class="flex items-center">
-            <div class="bg-green-100 text-green-600 p-3 rounded-full">
-                🏢
-            </div>
-            <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Active Properties</h3>
-                <p class="text-2xl font-bold text-green-600">35</p>
-            </div>
+      <div class="flex items-center">
+        <div class="bg-green-100 text-green-600 p-3 rounded-full">🏢</div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Active Properties</h3>
+          <p class="text-2xl font-bold text-green-600">35</p>
         </div>
+      </div>
     </div>
 
     <!-- Monthly Revenue Card -->
     <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-200">
-        <div class="flex items-center">
-            <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">
-                💰
-            </div>
-            <div class="ml-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Monthly Revenue</h3>
-                <p class="text-2xl font-bold text-yellow-600">$58,200</p>
-            </div>
+      <div class="flex items-center">
+        <div class="bg-yellow-100 text-yellow-600 p-3 rounded-full">💰</div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Monthly Revenue</h3>
+          <p class="text-2xl font-bold text-yellow-600">$58,200</p>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- Recent Leads Table -->
-<div class="bg-white dark:bg-gray-800 mt-8 p-6 rounded-xl shadow-lg">
+  <!-- Recent Leads Table -->
+  <div class="bg-white dark:bg-gray-800 mt-8 p-6 rounded-xl shadow-lg">
     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Recent Leads</h3>
     <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="border-b bg-gray-100 dark:bg-gray-700">
-                    <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Name</th>
-                    <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Email</th>
-                    <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Status</th>
-                    <th class="p-3 text-gray-700 dark:text-gray-300 font-medium text-right">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Lead Row 1 -->
-                <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                    <td class="p-3 text-gray-900 dark:text-white">John Doe</td>
-                    <td class="p-3 text-gray-900 dark:text-white">john@example.com</td>
-                    <td class="p-3">
-                        <span class="px-3 py-1.5 rounded-full text-sm font-semibold bg-green-100 text-green-600">
-                            Interested
-                        </span>
-                    </td>
-                    <td class="p-3 text-right">
-                        <a href="#" class="text-primary-600 hover:text-primary-500 font-medium">View</a>
-                    </td>
-                </tr>
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b bg-gray-100 dark:bg-gray-700">
+            <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Name</th>
+            <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Email</th>
+            <th class="p-3 text-gray-700 dark:text-gray-300 font-medium">Status</th>
+            <th class="p-3 text-gray-700 dark:text-gray-300 font-medium text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Lead Row 1 -->
+          <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+            <td class="p-3 text-gray-900 dark:text-white">John Doe</td>
+            <td class="p-3 text-gray-900 dark:text-white">john@example.com</td>
+            <td class="p-3">
+              <span class="px-3 py-1.5 rounded-full text-sm font-semibold bg-green-100 text-green-600">Interested</span>
+            </td>
+            <td class="p-3 text-right">
+              <a href="#" class="text-primary-600 hover:text-primary-500 font-medium">View</a>
+            </td>
+          </tr>
 
-                <!-- Lead Row 2 -->
-                <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                    <td class="p-3 text-gray-900 dark:text-white">Jane Smith</td>
-                    <td class="p-3 text-gray-900 dark:text-white">jane@example.com</td>
-                    <td class="p-3">
-                        <span class="px-3 py-1.5 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-600">
-                            Negotiation
-                        </span>
-                    </td>
-                    <td class="p-3 text-right">
-                        <a href="#" class="text-primary-600 hover:text-primary-500 font-medium">View</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+          <!-- Lead Row 2 -->
+          <tr class="border-b hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+            <td class="p-3 text-gray-900 dark:text-white">Jane Smith</td>
+            <td class="p-3 text-gray-900 dark:text-white">jane@example.com</td>
+            <td class="p-3">
+              <span class="px-3 py-1.5 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-600">Negotiation</span>
+            </td>
+            <td class="p-3 text-right">
+              <a href="#" class="text-primary-600 hover:text-primary-500 font-medium">View</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-</div>
-{% endblock dashboard_content %}
+  </div>
+{% endblock %}

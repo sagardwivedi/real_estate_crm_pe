@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Admin Dashboard - Real Estate CRM{% endblock title %}
+{% block title %}
+  Admin Dashboard - Real Estate CRM
+{% endblock %}
 
 {% block content %}
-<div class="flex h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="flex h-screen bg-gray-100 dark:bg-gray-900">
     <!-- Include Sidebar -->
     {% include '_sidebar.html' %}
 
     <!-- Main Content -->
     <main class="flex-1 p-6">
-        {% block dashboard_content %}
+      {% block dashboard_content %}
         <!-- This block will be overridden by child templates -->
-        {% endblock dashboard_content %}
+      {% endblock %}
     </main>
-</div>
-{% endblock content %}
+  </div>
+{% endblock %}

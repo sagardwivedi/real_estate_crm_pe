@@ -10,6 +10,7 @@ class PropertyListView(GroupRequiredMixin, ListView):
     model = Property
     template_name = "property_list.html"
     context_object_name = "properties"
+    required_groups = ["Company Admin", "Sales Manager", "Agent"]
 
 
 class PropertyDetailView(GroupRequiredMixin, DetailView):
@@ -20,8 +21,9 @@ class PropertyDetailView(GroupRequiredMixin, DetailView):
 
 class PropertyCreateView(GroupRequiredMixin, CreateView):
     model = Property
-    fields = ["name", "location", "price", "status", "description"]
+    fields = ["title", "address", "price"]
     template_name = "property_form.html"
+    required_groups = ["Company Admin"]
 
     def get_success_url(self):
         return reverse_lazy(

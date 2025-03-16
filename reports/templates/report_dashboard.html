@@ -1,52 +1,48 @@
 {% extends 'dashboard_base.html' %}
 
-{% block title %}Report - Real Estate CRM{% endblock title %}
+{% block title %}
+  Report - Real Estate CRM
+{% endblock %}
 
 {% block dashboard_content %}
-<div class="container mx-auto p-6">
+  <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6 dark:text-white">📊 Company Reports</h1>
 
     <!-- FILTER FORM -->
     <form method="GET" class="mb-6 bg-white dark:bg-gray-800 shadow p-4 rounded-lg">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {{ form.as_p }}
-        </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">{{ form.as_p }}</div>
 
-        <div class="mt-4 flex justify-end">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow">🔍 Apply Filters</button>
-        </div>
+      <div class="mt-4 flex justify-end">
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded shadow">🔍 Apply Filters</button>
+      </div>
     </form>
 
     <!-- REPORT STATS -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
-            <h2 class="text-lg font-semibold dark:text-gray-200">Total Users</h2>
-            <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ total_users }}</p>
-        </div>
+      <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
+        <h2 class="text-lg font-semibold dark:text-gray-200">Total Users</h2>
+        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ total_users }}</p>
+      </div>
 
-        <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
-            <h2 class="text-lg font-semibold dark:text-gray-200">Active Users (Last 30 days)</h2>
-            <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ active_users }}</p>
-        </div>
+      <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
+        <h2 class="text-lg font-semibold dark:text-gray-200">Active Users (Last 30 days)</h2>
+        <p class="text-3xl font-bold text-green-600 dark:text-green-400">{{ active_users }}</p>
+      </div>
 
-        <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
-            <h2 class="text-lg font-semibold dark:text-gray-200">Total Transactions</h2>
-            <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ total_transactions }}</p>
-        </div>
+      <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
+        <h2 class="text-lg font-semibold dark:text-gray-200">Total Transactions</h2>
+        <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{{ total_transactions }}</p>
+      </div>
 
-        <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
-            <h2 class="text-lg font-semibold dark:text-gray-200">Total Revenue</h2>
-            <p class="text-3xl font-bold text-green-600 dark:text-green-400">${{ total_revenue|floatformat:2 }}</p>
-        </div>
+      <div class="p-6 bg-white dark:bg-gray-800 shadow rounded-lg border">
+        <h2 class="text-lg font-semibold dark:text-gray-200">Total Revenue</h2>
+        <p class="text-3xl font-bold text-green-600 dark:text-green-400">${{ total_revenue|floatformat:2 }}</p>
+      </div>
     </div>
 
     <!-- EXPORT BUTTON -->
     <div class="mt-8 flex justify-end">
-        <a href="{% url 'reports:export_csv' name=request.user.company.name %}"
-            class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700">
-            📥 Export as CSV
-        </a>
+      <a href="{% url 'reports:export_csv' name=request.user.company.name %}" class="bg-blue-500 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700">📥 Export as CSV</a>
     </div>
-</div>
-
+  </div>
 {% endblock %}

@@ -1,23 +1,33 @@
 {% extends 'dashboard.html' %}
 
-{% block title %}Lead Details - Real Estate CRM{% endblock title %}
+{% block title %}
+  Lead Details - Real Estate CRM
+{% endblock %}
 
 {% block content %}
-<div class="p-6">
+  <div class="p-6">
     <div class="mb-6">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Lead Details</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Lead Details</h1>
     </div>
 
     <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ lead.name }}</h2>
-        <p class="text-gray-700 dark:text-gray-300"><strong>Email:</strong> {{ lead.email }}</p>
-        <p class="text-gray-700 dark:text-gray-300"><strong>Phone:</strong> {{ lead.phone }}</p>
-        <p class="text-gray-700 dark:text-gray-300"><strong>Status:</strong> {{ lead.status }}</p>
-        <p class="text-gray-700 dark:text-gray-300"><strong>Assigned Agent:</strong> {{ lead.assigned_agent }}</p>
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white">{{ lead.name }}</h2>
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>Email:</strong> {{ lead.email }}
+      </p>
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>Phone:</strong> {{ lead.phone }}
+      </p>
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>Status:</strong> {{ lead.status }}
+      </p>
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>Assigned Agent:</strong> {{ lead.assigned_agent }}
+      </p>
 
-        <div class="mt-4">
-            <a href="{% url 'leads:lead_list' %}" class="text-blue-600 hover:underline">Back to Leads</a>
-        </div>
+      <div class="mt-4">
+        <a href="{% url 'leads:lead_list' %}" class="text-blue-600 hover:underline">Back to Leads</a>
+      </div>
     </div>
-</div>
-{% endblock content %}
+  </div>
+{% endblock %}
