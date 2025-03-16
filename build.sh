@@ -2,14 +2,21 @@
 # Exit on error
 set -o errexit
 
-# Add uv
+# Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Modify this line as needed for your package manager (pip, poetry, etc.)
-uv pip sync requirements.txt
+# Ensure uv is in PATH
+export PATH="$HOME/.local/bin:$PATH"
 
-# Convert static asset files
+# Install dependencies if requirements.txt exists
+if [ -f requirements.txt ]; then
+    uv pip sync requirements.txt
+else
+    echo "Warning: requirements.txt not found!"
+fi
+
+# Collect static assets
 uv run python manage.py collectstatic --no-input
 
-# Apply any outstanding database migrations
+# Apply migrations
 uv run python manage.py migrate
