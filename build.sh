@@ -5,18 +5,17 @@ set -o errexit
 # Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Add uv to PATH
+# Ensure uv is in the PATH
 export PATH="/opt/render/.local/bin:$PATH"
 
+# Persist PATH change for future shell sessions
+echo 'export PATH="/opt/render/.local/bin:$PATH"' >> $HOME/.profile
+
 # Install dependencies
-if [ -f requirements.txt ]; then
-    uv pip sync requirements.txt
-else
-    echo "Warning: requirements.txt not found!"
-fi
+uv pip sync requirements.txt
 
 # Collect static files
 uv run python manage.py collectstatic --no-input
 
-# Apply migrations
+# Apply database migrations
 uv run python manage.py migrate
